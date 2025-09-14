@@ -5,6 +5,7 @@ import { CourseLevel, CourseStatus } from "@/lib/generated/prisma";
 import { prisma } from "@/lib/prisma";
 import { ApiResponse } from "@/utils/types";
 import { courseSchema, CourseSchema } from "@/utils/zod-schemas";
+import { revalidatePath } from "next/cache";
 import { notFound } from "next/navigation";
 
 export async function getCourse(courseId: string) {
@@ -90,6 +91,91 @@ export async function updateCourse(
     return {
       status: "error",
       message: "Something went wrong",
+    };
+  }
+}
+
+export async function reorderLessons(
+  chapterId: string,
+  lessons: { id: string; position: number }[],
+  courseId: string
+): Promise<ApiResponse> {
+  const user = await requireUser();
+
+  try {
+    if (!lessons || lessons.length === 0) {
+      return {
+        status: "error",
+        message: "No lessons provided for reordering",
+      };
+    }
+
+    const updates = lessons.map((lesson) =>
+      prisma.lesson.update({
+        where: {
+          id: lesson.id,
+          chapterId,
+        },
+        data: {
+          position: lesson.position,
+        },
+      })
+    );
+
+    await prisma.$transaction(updates);
+
+    revalidatePath(`/admin/courses/${courseId}/edit`);
+
+    return {
+      status: "success",
+      message: "Lessons reordered successfully",
+    };
+  } catch (error) {
+    return {
+      status: "error",
+      message: "Something went wrong",
+    };
+  }
+}
+
+export async function reorderChapters(
+  courseId: string,
+  chapters: { id: string; position: number }[]
+): Promise<ApiResponse> {
+  const user = await requireUser();
+
+  try {
+    if (!chapters || chapters.length === 0) {
+      return {
+        status: "error",
+        message: "No chapters provided for reordering",
+      };
+    }
+
+    const updates = chapters.map((chapter) =>
+      prisma.chapter.update({
+        where: {
+          id: chapter.id,
+          courseId,
+        },
+        data: {
+          position: chapter.position,
+        },
+      })
+    );
+
+    await prisma.$transaction(updates);
+
+    revalidatePath(`/admin/courses/${courseId}/edit`);
+
+    return {
+      status: "success",
+      message: "Chapters reordered successfully",
+    };
+  } catch (error) {
+    return {
+      status: "error",
+      message: "Something went wrong. Try again later.",
     };
   }
 }
