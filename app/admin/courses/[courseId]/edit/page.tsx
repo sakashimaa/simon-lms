@@ -31,7 +31,6 @@ export default async function EditCoursePage({
         >
           <ArrowLeft className="size-4" /> Go Back
         </Link>
-        <h1 className="text-2xl font-bold">Edit Course</h1>
       </div>
 
       <div>
