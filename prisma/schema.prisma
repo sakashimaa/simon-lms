@@ -102,7 +102,7 @@ model Chapter {
 
   lessons Lesson[]
 
-  Course   Course? @relation(fields: [courseId], references: [id])
+  Course   Course? @relation(fields: [courseId], references: [id], onDelete: Cascade)
   courseId String?
 
   createdAt DateTime @default(now())
@@ -118,7 +118,7 @@ model Lesson {
   videoKey     String?
   position     Int
 
-  Chapter   Chapter? @relation(fields: [chapterId], references: [id])
+  Chapter   Chapter? @relation(fields: [chapterId], references: [id], onDelete: Cascade)
   chapterId String?
 
   createdAt DateTime @default(now())

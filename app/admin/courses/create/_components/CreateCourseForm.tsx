@@ -50,10 +50,12 @@ import Image from "next/image";
 import { useTransition } from "react";
 import { createCourse } from "@/app/admin/actions";
 import { useRouter } from "next/navigation";
+import { useConfetti } from "@/hooks/use-confetti";
 
 export function CreateCourseForm() {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const { triggerConfetti } = useConfetti();
 
   const form = useForm<CourseSchema>({
     resolver: zodResolver(courseSchema),
@@ -78,8 +80,12 @@ export function CreateCourseForm() {
         toast.error(result.message);
       } else {
         toast.success(result.message);
+        triggerConfetti();
         form.reset();
-        router.push("/admin/courses");
+
+        setTimeout(() => {
+          router.push("/admin/courses");
+        }, 1500);
       }
     });
   }
