@@ -1,5 +1,6 @@
 "use client";
 
+import { RecentCourses } from "@/app/data/admin/admin-get-recent-courses";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -25,7 +26,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface iAppProps {
-  course: Course;
+  course: Course | RecentCourses;
 }
 
 export function AdminCourseCard({ course }: iAppProps) {
