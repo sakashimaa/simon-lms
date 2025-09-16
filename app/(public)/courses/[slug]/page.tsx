@@ -1,5 +1,6 @@
 import { getPublicFacingCourseBySlug } from "../actions";
 import { SlugClient } from "../_components/SlugClient";
+import { checkIfCourseBought } from "@/app/data/user-is-enrolled";
 
 export default async function CoursePage({
   params,
@@ -9,6 +10,7 @@ export default async function CoursePage({
   const { slug } = await params;
 
   const course = await getPublicFacingCourseBySlug(slug);
+  const isEnrolled = await checkIfCourseBought(course.id);
 
-  return <SlugClient course={course} />;
+  return <SlugClient course={course} isEnrolled={isEnrolled} />;
 }

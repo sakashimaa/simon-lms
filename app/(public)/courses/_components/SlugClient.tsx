@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import { PublicCourseBySlug } from "../actions";
 import { Badge } from "@/components/ui/badge";
@@ -18,14 +16,17 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Card, CardContent } from "@/components/ui/card";
-import { Check } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight, Check, Eye } from "lucide-react";
+import Link from "next/link";
+import { EnrollmentButton } from "./EnrollmentButton";
+import { buttonVariants } from "@/components/ui/button";
 
 interface iAppProps {
   course: PublicCourseBySlug;
+  isEnrolled: boolean;
 }
 
-export function SlugClient({ course }: iAppProps) {
+export function SlugClient({ course, isEnrolled }: iAppProps) {
   return (
     <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 mt-5">
       <div className="order-1 lg:col-span-2">
@@ -264,7 +265,16 @@ export function SlugClient({ course }: iAppProps) {
                 </ul>
               </div>
 
-              <Button className="w-full">Enroll Now!</Button>
+              {isEnrolled ? (
+                <Link
+                  href="/dashboard"
+                  className={buttonVariants({ className: "w-full" })}
+                >
+                  Watch Now <ArrowRight className="size-4" />
+                </Link>
+              ) : (
+                <EnrollmentButton courseId={course.id} />
+              )}
               <p className="mt-3 text-center text-xs text-muted-foreground">
                 30-day money-back guarantee
               </p>

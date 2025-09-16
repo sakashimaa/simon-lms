@@ -10,6 +10,9 @@ export const env = createEnv({
     GITHUB_CLIENT_SECRET: z.string().min(1),
     RESEND_API_KEY: z.string().min(1),
     UPLOADTHING_TOKEN: z.string().min(1),
+    STRIPE_SECRET_KEY: z.string().min(1),
+    STRIPE_PUBLIC_KEY: z.string().min(1),
+    STRIPE_WEBHOOK_SECRET: z.string().min(1),
   },
   runtimeEnv: {
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
@@ -19,5 +22,8 @@ export const env = createEnv({
     GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     UPLOADTHING_TOKEN: process.env.UPLOADTHING_TOKEN,
+    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+    STRIPE_PUBLIC_KEY: process.env.STRIPE_PUBLIC_KEY,
+    STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
   },
 });
